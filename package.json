@@ -1,0 +1,28 @@
+{
+  "name": "readme-gen",
+  "version": "1.0.0",
+  "description": "General use README Generator for developer projects.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shrcker/README-Generator.git"
+  },
+  "keywords": [
+    "README",
+    "Generator",
+    "npm",
+    "inquirer"
+  ],
+  "author": "Shrcker",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shrcker/README-Generator/issues"
+  },
+  "homepage": "https://github.com/Shrcker/README-Generator#readme",
+  "dependencies": {
+    "inquirer": "^8.0.0"
+  }
+}
