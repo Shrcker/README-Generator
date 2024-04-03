@@ -23,6 +23,6 @@
   },
   "homepage": "https://github.com/Shrcker/README-Generator#readme",
   "dependencies": {
-    "inquirer": "^8.0.0"
+    "inquirer": "^9.2.17"
   }
 }
