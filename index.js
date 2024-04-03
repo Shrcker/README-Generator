@@ -123,6 +123,10 @@ inquirer
     }
 
     fs.writeFile("README.md", generateHTML(responses), (error) => {
-      error ? console.error(error) : console.log("README Generated!");
+      error
+        ? console.error(error)
+        : console.log(
+            "README Generated! Make sure to double check this file for final edits."
+          );
     });
   });
