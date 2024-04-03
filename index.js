@@ -45,7 +45,8 @@ let generateHTML = (data) =>
 # ${data.name}
 
 ## Description
-  ${data.description}
+  ${data.description}<br>
+  Link: [Github Link](${data.link})
 
 ## Installation
   ${data.installGuide}
@@ -66,6 +67,12 @@ inquirer
       type: "input",
       message: "What is your project's name?",
       name: "name",
+    },
+    {
+      type: "input",
+      message:
+        "What is the project's Git Repository link? (Please include full https:// link)",
+      name: "link",
     },
     {
       type: "input",
@@ -116,6 +123,10 @@ inquirer
     }
 
     fs.writeFile("README.md", generateHTML(responses), (error) => {
-      error ? console.error(error) : console.log("README Generated!");
+      error
+        ? console.error(error)
+        : console.log(
+            "README Generated! Make sure to double check this file for final edits."
+          );
     });
   });
