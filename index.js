@@ -1,6 +1,5 @@
-const inquirer = require("inquirer");
-const fs = require("fs");
-const { error } = require("console");
+import inquirer from "inquirer";
+import * as fs from "fs";
 const licenses = [
   "Academic Free License v3.0",
   "Apache license 2.0",

@@ -24,5 +24,6 @@
   "homepage": "https://github.com/Shrcker/README-Generator#readme",
   "dependencies": {
     "inquirer": "^9.0.0"
-  }
+  },
+  "type": "module"
 }
