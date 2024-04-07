@@ -42,8 +42,11 @@ const licenses = [
 const generateREADME = (data) => {
   let readmeList = [
     `${"<h1>"} ${data.name}${"</h1>"}`,
-    `${"<h2>"} Description${"</h2><br />"}${data.description}`,
-    `${"<strong>"}Link:${"</strong>"} [Github Link](https://${data.link})`,
+    `${data.description}`,
+    `${"<strong>"}Link:${"</strong>"} ${"<a href=https://"}${
+      data.link
+    }${">Project Image</a>"}`,
+    `${"<img src="}./images/${data.image}${" />"}`,
     `${"<h2>"} Usage${"</h2><br />"} ${data.usage}`,
     `${"<h2>"} Credits${"</h2><br />"} ${data.credits}`,
     `${"<h2>"} License${"</h2><br />"} ${data.license}`,
@@ -82,6 +85,12 @@ inquirer
       message:
         "What is the project's Git Repository link? (Everything after the https://)",
       name: "link",
+    },
+    {
+      type: "input",
+      message:
+        "Please link a screenshot for this project. (Just the file name)",
+      name: "image",
     },
     {
       type: "input",
@@ -160,7 +169,6 @@ inquirer
     },
   ])
   .then((responses) => {
-    // console.log(responses);
     fs.writeFile("README.md", generateREADME(responses), (error) => {
       error
         ? console.error(error)
