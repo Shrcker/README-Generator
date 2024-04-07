@@ -39,26 +39,28 @@ const licenses = [
   "zLib License",
 ];
 
-let generateHTML = (data) =>
-  `
-# ${data.name}
+const generateREADME = (data) => {
+  let readmeList = [
+    `${"<h1>"} ${data.name}${"</h1><br />"}`,
+    `${"<h2>"} Description${"</h2><br />"}${data.description}${"<br />"}`,
+    `${"<strong>"}Link:${"</strong>"} [Github Link](https://${
+      data.link
+    })${"<br />"}`,
+    `${"<h2>"} Usage${"</h2><br />"} ${data.usage}${"<br />"}`,
+    `${"<h2>"} Credits${"</h2><br />"} ${data.credits}${"<br />"}`,
+    `${"<h2>"} License${"</h2><br />"} ${data.license}${"<br />"}`,
+  ];
+  const optionalElements = [
+    `${"<h2>"} Installation${"</h2><br />"}${data.installGuide}${"<br />"}`,
+  ];
 
-## Description
-  ${data.description}<br>
-  Link: [Github Link](${data.link})
-
-## Installation
-  ${data.installGuide}
-
-## Usage
-  ${data.usage}
-
-## Credits
-  ${data.credits}
-
-## License
-  ${data.license}
-`;
+  switch (readmeList) {
+    case data.hasInstallation:
+      readmeList.splice(2, 0, optionalElements[0]);
+      break;
+  }
+  return readmeList.join("");
+};
 
 inquirer
   .prompt([
@@ -70,7 +72,7 @@ inquirer
     {
       type: "input",
       message:
-        "What is the project's Git Repository link? (Please include full https:// link)",
+        "What is the project's Git Repository link? (Everything after the https://)",
       name: "link",
     },
     {
@@ -117,11 +119,8 @@ inquirer
     },
   ])
   .then((responses) => {
-    if (responses.isInstalled) {
-      generateHTML += ``;
-    }
-
-    fs.writeFile("README.md", generateHTML(responses), (error) => {
+    // console.log(responses);
+    fs.writeFile("README.md", generateREADME(responses), (error) => {
       error
         ? console.error(error)
         : console.log(
