@@ -45,8 +45,8 @@ const generateREADME = (data) => {
     `${data.description}`,
     `${"<strong>"}Link:${"</strong>"} ${"<a href=https://"}${
       data.link
-    }${">Project Image</a>"}`,
-    `${"<img src="}./images/${data.image}${" />"}`,
+    }${">Github Link</a>"}`,
+    `${"<img src="}./images/${data.image} alt="Project Screenshot"${" />"}`,
     `${"<h2>"} Usage${"</h2><br />"} ${data.usage}`,
     `${"<h2>"} Credits${"</h2><br />"} ${data.credits}`,
     `${"<h2>"} License${"</h2><br />"} ${data.license}`,
