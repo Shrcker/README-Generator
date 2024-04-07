@@ -41,25 +41,33 @@ const licenses = [
 
 const generateREADME = (data) => {
   let readmeList = [
-    `${"<h1>"} ${data.name}${"</h1><br />"}`,
-    `${"<h2>"} Description${"</h2><br />"}${data.description}${"<br />"}`,
-    `${"<strong>"}Link:${"</strong>"} [Github Link](https://${
-      data.link
-    })${"<br />"}`,
-    `${"<h2>"} Usage${"</h2><br />"} ${data.usage}${"<br />"}`,
-    `${"<h2>"} Credits${"</h2><br />"} ${data.credits}${"<br />"}`,
-    `${"<h2>"} License${"</h2><br />"} ${data.license}${"<br />"}`,
+    `${"<h1>"} ${data.name}${"</h1>"}`,
+    `${"<h2>"} Description${"</h2><br />"}${data.description}`,
+    `${"<strong>"}Link:${"</strong>"} [Github Link](https://${data.link})`,
+    `${"<h2>"} Usage${"</h2><br />"} ${data.usage}`,
+    `${"<h2>"} Credits${"</h2><br />"} ${data.credits}`,
+    `${"<h2>"} License${"</h2><br />"} ${data.license}`,
   ];
   const optionalElements = [
-    `${"<h2>"} Installation${"</h2><br />"}${data.installGuide}${"<br />"}`,
+    `${"<h2>"} Installation${"</h2><br />"}${data.installGuide}`,
+    `${"<h2>"} Features${"</h2><br />"}${data.features}`,
+    `${"<h2>"} How to Contribute${"</h2><br />"}${data.contributions}`,
+    `${"<h2>"} Tests${"</h2><br />"}${data.tests}`,
   ];
 
-  switch (readmeList) {
-    case data.hasInstallation:
-      readmeList.splice(2, 0, optionalElements[0]);
-      break;
+  if (data.hasInstallation) {
+    readmeList.splice(3, 0, optionalElements[0]);
   }
-  return readmeList.join("");
+  if (data.hasFeatures) {
+    readmeList.push(optionalElements[1]);
+  }
+  if (data.hasContributions) {
+    readmeList.push(optionalElements[2]);
+  }
+  if (data.hasTests) {
+    readmeList.push(optionalElements[3]);
+  }
+  return readmeList.join(`${"<br />"}`);
 };
 
 inquirer
@@ -99,23 +107,56 @@ inquirer
       name: "usage",
     },
     {
-      type: "confirm",
-      message: "Would you like to credit anyone for the project's development?",
-      name: "hasCredits",
-    },
-    {
       type: "input",
-      message: "Who will you credit?",
+      message:
+        "Who will you credit for helping you with the project's development?",
       name: "credits",
-      when(answers) {
-        return answers.hasCredits;
-      },
     },
     {
       type: "list",
       message: "What is project's license?",
       name: "license",
       choices: licenses,
+    },
+    {
+      type: "confirm",
+      message: "Does your project have a lot of features you'd like to list?",
+      name: "hasFeatures",
+    },
+    {
+      type: "input",
+      message: "List your features now.",
+      name: "features",
+      when(answers) {
+        return answers.hasFeatures;
+      },
+    },
+    {
+      type: "confirm",
+      message:
+        "Are there any particular ways that other people can contribute to this project?",
+      name: "hasContributions",
+    },
+    {
+      type: "input",
+      message: "How can they contribute?",
+      name: "contributions",
+      when(answers) {
+        return answers.hasContributions;
+      },
+    },
+    {
+      type: "confirm",
+      message: "Are there any ways to test aspects of this project?",
+      name: "hasTests",
+    },
+    {
+      type: "input",
+      message: "What are these tests?",
+      name: "tests",
+      when(answers) {
+        return answers.hasTests;
+      },
     },
   ])
   .then((responses) => {
