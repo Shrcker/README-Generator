@@ -42,36 +42,52 @@ const findBadge = (license) => {
   return foundBadge;
 };
 
-const generateREADME = (data, badgeIndex) => {
+const generateREADME = (data, badge) => {
   let readmeList = [
-    `${"<h1>"}${data.name} ${badgeIndex}${"</h1>"}`,
+    `${"<h1 id='description'>"}${data.name} ${badge}${"</h1>"}`,
     `${data.description}`,
-    `${"<strong>"}Link:${"</strong>"} ${"<a href=https://"}${
-      data.link
-    }${">Github Link</a>"}`,
+    `${"<strong>"}Link:${"</strong>"} ${"<a href=https://"}${data.link}${">Github Link</a>"}`,
     `${"<img src="}./images/${data.image} alt="Project Screenshot"${" />"}`,
-    `${"<h2>"} Usage${"</h2><br />"} ${data.usage}`,
-    `${"<h2>"} Credits${"</h2><br />"} ${data.credits}`,
-    `${"<h2>"} License${"</h2><br />"} ${data.license}`,
+    `${"<h2 id='usage'>"} Usage${"</h2><br />"} ${data.usage}`,
+    `${"<h2 id='credits'>"} Credits${"</h2><br />"} ${data.credits}`,
+    `${"<h2 id='license'>"} License${"</h2><br />"} ${data.license}`,
+    `${"<h2 id='questions'>"} Questions${"</h2><br />"} Who is the project's host?${"<br />"}It's ${data.username}; link to their profile: 
+    ${'<a href="https://www.github.com/'}${data.username}${'">Link</a><br />'} And their email: ${data.email}`,
   ];
   const optionalElements = [
-    `${"<h2>"} Installation${"</h2><br />"}${data.installGuide}`,
-    `${"<h2>"} Features${"</h2><br />"}${data.features}`,
-    `${"<h2>"} How to Contribute${"</h2><br />"}${data.contributions}`,
-    `${"<h2>"} Tests${"</h2><br />"}${data.tests}`,
+    `${"<h2 id='installation'>"} Installation${"</h2><br />"}${data.installGuide}`,
+    `${"<h2 id='features'>"} Features${"</h2><br />"}${data.features}`,
+    `${"<h2 id='contribute'>"} How to Contribute${"</h2><br />"}${data.contributions}`,
+    `${"<h2 id='tests'>"} Tests${"</h2><br />"}${data.tests}`,
+  ];
+  let tableOfContents = [
+    `${"<h3>Table of Contents</h3><ol>"}`,
+    `${'<li><a href="#description"><span>Description</span></a></li>'}`,
+    `${'<li><a href="#usage"><span>Usage</span></a></li>'}`,
+    `${'<li><a href="#credits"><span>Credits</span></a></li>'}`,
+    `${'<li><a href="#license"><span>License</span></a></li>'}`,
+    `${'<li><a href="#questions"><span>Questions</span></a></li>'}`,
   ];
 
   if (data.hasInstallation) {
-    readmeList.splice(3, 0, optionalElements[0]);
+    readmeList.splice(4, 0, optionalElements[0]);
+    tableOfContents.splice(2, 0, `${'<li><a href="#installation"><span>Installation</span></a></li>'}`);
   }
   if (data.hasFeatures) {
     readmeList.push(optionalElements[1]);
+    tableOfContents.push(`${'<li><a href="#features"><span>Features</span></a></li>'}`);
   }
   if (data.hasContributions) {
     readmeList.push(optionalElements[2]);
+    tableOfContents.push(`${'<li><a href="#contribute"><span>How to Contribute</span></a></li>'}`);
   }
   if (data.hasTests) {
     readmeList.push(optionalElements[3]);
+    tableOfContents.push(`${'<li><a href="#tests"><span>Tests</span></a></li>'}`);
+  }
+  if (tableOfContents.length > 5) {
+    tableOfContents.push(`${"</ol>"}`);
+    readmeList.splice(4, 0, tableOfContents.join(""));
   }
   return readmeList.join(`${"<br />"}`);
 };
@@ -85,14 +101,22 @@ inquirer
     },
     {
       type: "input",
-      message:
-        "What is the project's Git Repository link? (Everything after the https://)",
+      message: "What is the project's Git Repository link? (Everything after the https://)",
       name: "link",
     },
     {
       type: "input",
-      message:
-        "Please link a screenshot for this project. (Just the file name)",
+      message: "What's your Github username?",
+      name: "username",
+    },
+    {
+      type: "input",
+      message: "Please enter your email address.",
+      name: "email",
+    },
+    {
+      type: "input",
+      message: "Please link a screenshot for this project. (Just the file name)",
       name: "image",
     },
     {
@@ -120,8 +144,7 @@ inquirer
     },
     {
       type: "input",
-      message:
-        "Who will you credit for helping you with the project's development?",
+      message: "Who will you credit for helping you with the project's development?",
       name: "credits",
     },
     {
@@ -145,8 +168,7 @@ inquirer
     },
     {
       type: "confirm",
-      message:
-        "Are there any particular ways that other people can contribute to this project?",
+      message: "Are there any particular ways that other people can contribute to this project?",
       name: "hasContributions",
     },
     {
@@ -173,15 +195,8 @@ inquirer
   ])
   .then((responses) => {
     const badgeIndex = findBadge(responses.license);
-    fs.writeFile(
-      "README.md",
-      generateREADME(responses, badgeIndex),
-      (error) => {
-        error
-          ? console.error(error)
-          : console.log(
-              "README Generated! Make sure to double check this file for final edits."
-            );
-      }
-    );
+
+    fs.writeFile("README.md", generateREADME(responses, badgeIndex), (error) => {
+      error ? console.error(error) : console.log("README Generated! Make sure to double check this file for final edits.");
+    });
   });
