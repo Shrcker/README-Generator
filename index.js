@@ -1,47 +1,50 @@
 import inquirer from "inquirer";
 import * as fs from "fs";
 const licenses = [
-  "Academic Free License v3.0",
-  "Apache license 2.0",
-  "Artistic license 2.0",
-  "Boost Software License 1.0",
-  'BSD 2-clause "Simplified" license',
-  'BSD 3-clause "New" or "Revised" license',
-  "BSD 3-clause Clear license",
-  'BSD 4-clause "Original" or "Old" license',
-  "BSD Zero-Clause license",
-  "Creative Commons license family",
-  "Creative Commons Zero v1.0 Universal",
-  "Creative Commons Attribution 4.0",
-  "Creative Commons Attribution ShareAlike 4.0",
-  "Do What The F*ck You Want To Public License",
-  "Educational Community License v2.0",
+  "Apache 2.0 License",
+  "BSD 2-Clause License",
+  "BSD 3-Clause License",
+  "Attribution 4.0 International",
+  "Attribution-ShareAlike 4.0 International",
   "Eclipse Public License 1.0",
-  "Eclipse Public License 2.0",
-  "European Union Public License 1.1",
-  "GNU Affero General Public License v3.0",
-  "GNU General Public License family",
-  "GNU General Public License v2.0",
-  "GNU General Public License v3.0",
-  "GNU Lesser General Public License family",
-  "GNU Lesser General Public License v2.1",
-  "GNU Lesser General Public License v3.0",
-  "ISC",
-  "LaTeX Project Public License v1.3c",
-  "Microsoft Public License",
-  "MIT",
+  "GNU AGPL v3",
+  "GNU GPL v2",
+  "GNU GPL v3",
+  "GNU LGPL v3",
+  "IBM Public License Version 1.0",
+  "The MIT License",
   "Mozilla Public License 2.0",
-  "Open Software License 3.0",
-  "PostgreSQL License",
-  "SIL Open Font License 1.1",
-  "University of Illinois/NCSA Open Source License",
-  "The Unlicense",
-  "zLib License",
+  "Open Database License",
+  "The zlib/libpng License",
 ];
 
-const generateREADME = (data) => {
+const licenseBadges = [
+  '<a href="https://opensource.org/licenses/Apache-2.0"><img alt="Apache 2.0 License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a>',
+  '<a href="https://opensource.org/licenses/BSD-2-Clause"><img alt="BSD 2-Clause License src="https://img.shields.io/badge/License-BSD%202--Clause-orange.svg" /></a>',
+  '<a href="https://opensource.org/licenses/BSD-3-Clause"><img alt="BSD 3-Clause License" src="https://img.shields.io/badge/License-BSD%203--Clause-blue.svg" /></a>',
+  '<a href="https://creativecommons.org/licenses/by/4.0/"><img alt="Attribution 4.0 International" src="https://licensebuttons.net/l/by/4.0/80x15.png" /></a>',
+  '<a href="https://creativecommons.org/licenses/by-sa/4.0/"><img alt="Attribution-ShareAlike 4.0 International" src="https://licensebuttons.net/l/by-sa/4.0/80x15.png" /></a>',
+  '<a href="https://opensource.org/licenses/EPL-1.0"><img alt="Eclipse Public License 1.0" src="https://img.shields.io/badge/License-EPL%201.0-red.svg" /></a>',
+  '<a href="https://www.gnu.org/licenses/agpl-3.0"><img alt="GNU AGPL v3" src="https://img.shields.io/badge/License-AGPL%20v3-blue.svg" /></a>',
+  '<a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html"><img alt="GNU GPL v2" src="https://img.shields.io/badge/License-GPL%20v2-blue.svg" /></a>',
+  '<a href="https://www.gnu.org/licenses/gpl-3.0"><img alt="GNU GPL v3" src="https://img.shields.io/badge/License-GPL%20v3-blue.svg" /></a>',
+  '<a href="https://www.gnu.org/licenses/lgpl-3.0"><img alt="GNU LGPL v3" src="https://img.shields.io/badge/License-LGPL%20v3-blue.svg" /></a>',
+  '<a href="https://opensource.org/licenses/IPL-1.0"><img alt="IBM Public License Version 1.0" src="https://img.shields.io/badge/License-IPL%201.0-blue.svg" /></a>',
+  '<a href="https://opensource.org/licenses/MIT"><img alt="The MIT License" src="https://img.shields.io/badge/License-MIT-yellow.svg" /></a>',
+  '<a href="https://opensource.org/licenses/MPL-2.0"><img alt="Mozilla Public License 2.0" src="https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg" /></a>',
+  '<a href="https://opendatacommons.org/licenses/odbl/"><img alt="Open Database License" src="https://img.shields.io/badge/License-ODbL-brightgreen.svg" /></a>',
+  '<a href="https://opensource.org/licenses/Zlib"><img alt="The zlib/libpng License" src="https://img.shields.io/badge/License-Zlib-lightgrey.svg" /></a>',
+];
+
+const findBadge = (license) => {
+  const findLicenseIndex = licenses.indexOf(license);
+  const foundBadge = licenseBadges[findLicenseIndex];
+  return foundBadge;
+};
+
+const generateREADME = (data, badgeIndex) => {
   let readmeList = [
-    `${"<h1>"} ${data.name}${"</h1>"}`,
+    `${"<h1>"}${data.name} ${badgeIndex}${"</h1>"}`,
     `${data.description}`,
     `${"<strong>"}Link:${"</strong>"} ${"<a href=https://"}${
       data.link
@@ -169,11 +172,16 @@ inquirer
     },
   ])
   .then((responses) => {
-    fs.writeFile("README.md", generateREADME(responses), (error) => {
-      error
-        ? console.error(error)
-        : console.log(
-            "README Generated! Make sure to double check this file for final edits."
-          );
-    });
+    const badgeIndex = findBadge(responses.license);
+    fs.writeFile(
+      "README.md",
+      generateREADME(responses, badgeIndex),
+      (error) => {
+        error
+          ? console.error(error)
+          : console.log(
+              "README Generated! Make sure to double check this file for final edits."
+            );
+      }
+    );
   });
