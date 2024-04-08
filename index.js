@@ -52,7 +52,7 @@ const generateREADME = (data, badge) => {
     `${"<h2 id='credits'>"} Credits${"</h2><br />"} ${data.credits}`,
     `${"<h2 id='license'>"} License${"</h2><br />"} ${data.license}`,
     `${"<h2 id='questions'>"} Questions${"</h2><br />"} Who is the project's host?${"<br />"}It's ${data.username}; link to their profile: 
-    ${'<a href="https://www.github.com/'}${data.username}${'">Link</a><br />'} And their email: ${data.email}`,
+    ${'<a href="https://www.github.com/'}${data.username}${'">Link</a><br />'} You can contact them through email: ${data.email}`,
   ];
   const optionalElements = [
     `${"<h2 id='installation'>"} Installation${"</h2><br />"}${data.installGuide}`,
@@ -111,7 +111,7 @@ inquirer
     },
     {
       type: "input",
-      message: "Please enter your email address.",
+      message: "What would be the best email to reach you?",
       name: "email",
     },
     {
