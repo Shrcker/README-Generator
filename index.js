@@ -196,7 +196,7 @@ inquirer
   .then((responses) => {
     const badgeIndex = findBadge(responses.license);
 
-    fs.writeFile("README.md", generateREADME(responses, badgeIndex), (error) => {
+    fs.appendFile("Example-README.md", generateREADME(responses, badgeIndex), (error) => {
       error ? console.error(error) : console.log("README Generated! Make sure to double check this file for final edits.");
     });
   });
